@@ -6,11 +6,6 @@
 # (BinaryBlocker::PackedNumberEncoder) and date fields 
 # (BinaryBlocker::PackedDateEncoder) 
 
-begin
-  require 'uconv'
-rescue LoadError
-end
-
 require 'date'
 require 'time'
 
@@ -278,9 +273,9 @@ module BinaryBlocker
       def include_klasses(klasses, *opts)
         klasses = klasses.map do |k| 
           case
-          when @klasses[k]          ; lambda { @klasses[k].new(*opts) }
+          when @klasses[k]          ; lambda { |*foo| @klasses[k].new(*opts) }
           when k.respond_to?(:call) ; k
-          when k.respond_to?(:new)  ; lambda { k.new(*opts) }
+          when k.respond_to?(:new)  ; lambda { |*foo| k.new(*opts) }
           else raise "Unable to process class: #{k}"
           end
         end
@@ -523,12 +518,14 @@ module BinaryBlocker
     end
     
     def internal_block(val)
-      [Uconv.u8tou16(val || "")].pack(@format)
+      #[Uconv.u8tou16(val || "")].pack(@format)
+      [val.encode("UTF-16LE") || ""].pack(@format)
     end
     
     def internal_deblock(io)
       buffer = io.read(@length)
-      Uconv.u16tou8(buffer).sub(/\000+$/,'')
+      buffer.force_encoding("UTF-16LE")
+      buffer.encode("UTF-8").sub(/\u0000*$/,"")
     end    
   end
   BinaryBlocker.register_klass(:utf16_string, FixedUTF16StringEncoder)

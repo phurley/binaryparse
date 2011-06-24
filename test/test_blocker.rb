@@ -49,7 +49,7 @@ class TestBlocker < Test::Unit::TestCase
     bb = BBTest2.new
     bb.bar = 21
     buf = bb.block
-    buf[0] = 0
+    buf[0] = 0.chr
 
     bb2 = BBTest2.new
     status = bb2.deblock(StringIO.new(buf))
@@ -546,10 +546,10 @@ class TestBlocker < Test::Unit::TestCase
     bb.items << ia << ib
 
     b2 = bb.clone
-    assert(13, b2.header)
+    assert_equal(13, b2.header)
     b2.header = 21
-    assert(21, b2.header)
-    assert(13, bb.header)    
+    assert_equal(21, b2.header)
+    assert_equal(13, bb.header)    
   end
 
   class Nested < BinaryBlocker::Blocker
