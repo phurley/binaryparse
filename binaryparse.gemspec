@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "binaryparse"
-  s.version = "1.1.0"
+  s.version = "1.1.1"
   s.author = "Patrick Hurley"
   s.email = "phurley@gmail.com"
   s.homepage = "http://binaryparse.rubyforge.org/"

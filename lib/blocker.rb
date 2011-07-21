@@ -386,7 +386,7 @@ module BinaryBlocker
           end
         end
       end
-      puts "method missing #{sym.inspect} #{bt}"
+      #puts "method missing #{sym.inspect}"
       super
     end
     
@@ -785,7 +785,7 @@ module BinaryBlocker
   class OneOfEncoder < Encoder
   
     def inspect
-      "OneOf #{@classes.join(',')} -> #{@obj.class} -> #{@obj.inspect}" 
+      "OneOf(#{@classes.map {|c| c.class }.join(',')}) -> #{@obj.inspect}" 
     end
     
     def initialize(classes, *opts)
