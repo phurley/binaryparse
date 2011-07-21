@@ -582,7 +582,7 @@ module BinaryBlocker
     def internal_deblock(io)
       buffer = io.read(@bytes)
       result = buffer.unpack(@format)
-      result.first.match(/(\d+)/)[0].to_i
+      result.first.match(/(\d+)/)[0].to_s
     end    
   end
   BinaryBlocker.register_klass(:new_packed, NewPackedNumberEncoder)
